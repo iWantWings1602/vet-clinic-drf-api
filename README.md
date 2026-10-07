@@ -11,13 +11,19 @@ A clean RESTful API for managing veterinary clinic operations, built using Djang
 6. Seed the database with sample data: `python manage.py seed`
 7. Start the server: `python manage.py runserver`
 
+## How to run tests
+To run automatic permission and validation tests, use the following command:
+```bash
+python manage.py test clinic
+```
+
 ## API Endpoints Table
 
 | Method | Endpoint | Description | Permission |
 |--------|----------|-------------|------------|
-| GET | `/api/owners/` | List all owners | Anyone (Read-only) |
+| GET | `/api/owners/` | List all owners (search available) | Anyone (Read-only) |
 | GET | `/api/owners/<id>/` | Detailed owner info | Anyone (Read-only) |
-| GET | `/api/pets/` | List all pets (with filters/search) | Anyone (Read-only) |
+| GET | `/api/pets/` | List all pets (with filters/search/pagination) | Anyone (Read-only) |
 | POST | `/api/pets/` | Create a new pet entry | Authenticated users |
 | PATCH | `/api/pets/<id>/` | Partially update pet data | Object owner only |
 | DELETE| `/api/pets/<id>/` | Delete pet record | Object owner only |
