@@ -29,6 +29,12 @@ class PetViewSet(viewsets.ModelViewSet):
     ordering_fields = ['birth_year', 'owner']
     ordering = ['id']
 
+    def perform_create(self, serializer):
+        owner_profile = self.request.user.clinic_owners.first()
+        if owner_profile:
+            serializer.save(owner=owner_profile)
+        else:
+            serializer.save(owner=Owner.objects.first())
 
 class MedicalRecordViewSet(viewsets.ModelViewSet):
     queryset = MedicalRecord.objects.all()
