@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, exceptions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -6,11 +6,11 @@ from .permissions import IsOwnerOrReadOnly
 from .models import Owner, Pet, MedicalRecord
 from .serializers import OwnerSerializer, PetSerializer, MedicalRecordSerializer
 
+
 class OwnerViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-
     search_fields = ['name', 'phone']
     ordering = ['id']
 
@@ -20,21 +20,21 @@ class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
-    filterset_fields = {
-        'species': ['iexact'],
-        'birth_year': ['exact'],
-        'owner': ['exact'],
-    }
-    search_fields = ['name', 'owner_name']
-    ordering_fields = ['birth_year', 'owner']
+    filterset_fields = ['species', 'birth_year', 'owner']
+
+    search_fields = ['name', 'owner__name', 'species']
+    ordering_fields = ['birth_year', 'name']
     ordering = ['id']
+
 
     def perform_create(self, serializer):
         owner_profile = self.request.user.clinic_owners.first()
-        if owner_profile:
-            serializer.save(owner=owner_profile)
-        else:
-            serializer.save(owner=Owner.objects.first())
+        if not owner_profile:
+            raise exceptions.PermissionDenied(
+                "You do not have an associated Owner profile. Please create an Owner profile first before adding pets."
+            )
+        serializer.save(owner=owner_profile)
+
 
 class MedicalRecordViewSet(viewsets.ModelViewSet):
     queryset = MedicalRecord.objects.all()

@@ -1,0 +1,47 @@
+{
+"info": {
+"name": "Vet Clinic API",
+"schema": "https://getpostman.com"
+},
+"item": [
+{
+"name": "1. Login",
+"request": {
+"method": "POST",
+"header": [],
+"body": {
+"mode": "raw",
+"raw": "{\n    \"username\": \"doctor_alex\",\n    \"password\": \"password123\"\n}",
+"options": {
+"raw": {
+"language": "json"
+}
+}
+},
+"url": {
+"raw": "http://127.0.0",
+"protocol": "http",
+"host": ["127", "127", "0", "0", "1"],
+"port": "8000",
+"path": ["api", "token", ""]
+}
+},
+"response": []
+},
+{
+"name": "Pets - List",
+"request": {
+"method": "GET",
+"header": [],
+"url": {
+"raw": "http://127.0.0",
+"protocol": "http",
+"host": ["127", "127", "0", "0", "1"],
+"port": "8000",
+"path": ["api", "pets", ""]
+}
+},
+"response": []
+}
+]
+}
