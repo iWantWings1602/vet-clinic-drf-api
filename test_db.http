@@ -1,0 +1,9 @@
+### Крок 1: Логін та отримання токена
+POST http://127.0.0
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "12345"
+}
+
